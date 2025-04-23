@@ -1,0 +1,79 @@
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+    text-align: center;
+}
+img {
+    width: 600px;
+}
+h1 {
+    background-color: #333;
+    color: white;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+h3 {
+    color: #333;
+}
+table {
+    margin: 0 auto;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+th, td {
+    padding: 15px;
+    border: 1px solid #ddd;
+}
+th {
+    background-color: #333;
+    color: white;
+}
+a {
+    text-decoration: none;
+    color: #007bff;
+}
+button {
+    padding: 10px 15px;
+    font-size: 16px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: #0056b3;
+}
+iframe {
+    width: 80%;
+    height: 400px;
+    margin: 20px auto;
+    display: block;
+}
+.video-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.citation {
+    font-style: italic;
+    color: #555;
+    margin-bottom: 20px;
+}
+.description {
+    max-width: 800px;
+    margin: 0 auto;
+    display: none;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    text-align: left;
+    line-height: 1.6;
+}
+.toggle-btn {
+    margin-top: 10px;
+}
