@@ -1,9 +1,10 @@
+<!DOCTYPE html>
+<html>
 <head>
     <title>ALPR Website</title>
     <link rel="stylesheet" href="new_styles.css">
 </head>
 <body>
-   
 
 <h1>Automatic License Plate Reader Database</h1>
 
@@ -13,13 +14,33 @@
     </tr>
 </table>
 
-<a><img src = "example_image.png" alt="Previous license plate detection"></a>
-<p>The image above shows the most recent detection captured by the Raspberry Pi.</p>
+<!-- The dynamic image -->
+<a><img id="latest-image" src="example_image.png" alt="Previous license plate detection" width="400"></a>
+<p id="image-caption">The image above shows the most recent detection captured by the Raspberry Pi.</p>
 
+<p><a href="#"><button type="button">Back to Top</button></a></p>
 
-<p><a href = "#">
-    <button type="button">Back to Top</button>
-</a></p>
+<script>
+// Replace with your Azure Function URL base
+const API_BASE = "https://alpr-function-1.azurewebsites.net/api";
+
+async function fetchLatestImage() {
+    try {
+        const response = await fetch(`${API_BASE}/images`);
+        const images = await response.json();
+        if (images.length > 0) {
+            const latest = images[images.length - 1];
+            document.getElementById('latest-image').src = latest.image_url || "data:image/png;base64," + latest.image_base64;
+            document.getElementById('image-caption').innerText = `Captured at: ${new Date(latest.captured_at).toLocaleString()}`;
+        }
+    } catch (error) {
+        console.error("Failed to fetch image:", error);
+    }
+}
+
+// Call on load
+fetchLatestImage();
+</script>
 
 </body>
 </html>

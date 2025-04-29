@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>All License Plate Detections</title>
+    <link rel="stylesheet" href="new_styles.css">
+</head>
+<body>
+
+<h1>Previous License Plate Detections</h1>
+
+<table id="detections-table" border="1">
+    <thead>
+        <tr>
+            <th>Image</th>
+            <th>Captured At</th>
+            <th>Edge Device Reading</th>
+            <th>Cloud AI Reading</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Rows will be filled by JS -->
+    </tbody>
+</table>
+
+<p><a href="index.html"><button type="button">Back to Home</button></a></p>
+
+<script>
+const API_BASE = "https://alpr-function-1.azurewebsites.net/api";
+
+async function loadDetections() {
+    try {
+        const [imagesRes, readingsRes] = await Promise.all([
+            fetch(`${API_BASE}/images`),
+            fetch(`${API_BASE}/readings`)
+        ]);
+        const images = await imagesRes.json();
+        const readings = await readingsRes.json();
+
+        // Map image_id -> readings
+        const readingMap = {};
+        readings.forEach(reading => {
+            readingMap[reading.image_id] = reading;
+        });
+
+        const tableBody = document.querySelector("#detections-table tbody");
+        images.forEach(img => {
+            const row = document.createElement("tr");
+
+            const imgCell = document.createElement("td");
+            const imageElement = document.createElement("img");
+            imageElement.width = 150;
+            if (img.image_url) {
+                imageElement.src = img.image_url;
+            } else {
+                imageElement.src = "data:image/png;base64," + img.image_base64;
+            }
+            imgCell.appendChild(imageElement);
+
+            const timeCell = document.createElement("td");
+            timeCell.textContent = new Date(img.captured_at).toLocaleString();
+
+            const reading = readingMap[img.id] || {};
+            const edgeCell = document.createElement("td");
+            edgeCell.textContent = reading.edge_device_reading || "N/A";
+
+            const aiCell = document.createElement("td");
+            aiCell.textContent = reading.cloud_ai_reading || "N/A";
+
+            row.appendChild(imgCell);
+            row.appendChild(timeCell);
+            row.appendChild(edgeCell);
+            row.appendChild(aiCell);
+
+            tableBody.appendChild(row);
+        });
+    } catch (err) {
+        console.error("Failed to load detections:", err);
+    }
+}
+
+loadDetections();
+</script>
+
+</body>
+</html>
